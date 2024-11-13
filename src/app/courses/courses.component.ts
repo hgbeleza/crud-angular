@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Course } from '../model/Course';
+import { CoursesService } from '../services/courses.service';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-courses',
@@ -8,15 +10,18 @@ import { Course } from '../model/Course';
   templateUrl: './courses.component.html',
   styleUrl: './courses.component.scss'
 })
-export class CoursesComponent {
-  courses: Course[] = [
-    { id: 1, name: 'Angular + Spring', category: 'fullstack' },
-    { id: 2, name: 'Java Spring Boot', category: 'Backend' },
-    { id: 3, name: 'Angular 17', category: 'Frontend' },
-    { id: 4, name: 'angular + spring', category: 'fullstack' },
-    { id: 5, name: 'angular + spring', category: 'fullstack' },
-    { id: 6, name: 'angular + spring', category: 'fullstack' },
-    { id: 7, name: 'angular + spring', category: 'fullstack' },
-    { id: 8, name: 'angular + spring', category: 'fullstack' }
-  ];
+export class CoursesComponent implements OnInit {
+  courses: Course[] = [];
+
+  constructor(private courseService: CoursesService) {}
+
+  ngOnInit(): void {
+    this.getAll();
+  }
+
+  getAll() {
+    return this.courseService.getAllCourses().subscribe(data => {
+      this.courses = data;
+    });
+  }
 }
