@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable } from 'rxjs';
 import { Course } from '../model/Course';
 
 @Injectable({
@@ -13,5 +13,10 @@ export class CoursesService {
 
   getAllCourses(): Observable<Course[]> {
     return this.http.get<Course[]>(`${this.apiURL}/courses`);
+  }
+
+  save(record: Course): Observable<Course> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post<Course>(`${this.apiURL}/courses/add`, record, { headers });
   }
 }
